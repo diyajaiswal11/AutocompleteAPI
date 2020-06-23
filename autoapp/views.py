@@ -8,7 +8,6 @@ import csv
 import json
 
 
-
 def search(request):
     s=request.GET['s']
     response=[]
