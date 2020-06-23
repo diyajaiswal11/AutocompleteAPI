@@ -3,5 +3,5 @@ from . import views
 
 urlpatterns = [
     path('search/',views.search,name='search'),
-    #path('cities/',views.cities,name='cities'),
+    path('addlocation/',views.addlocation,name='addlocation'),
 ]
