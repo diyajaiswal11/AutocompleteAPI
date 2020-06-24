@@ -12,15 +12,32 @@ import json
 
 
 def search(request):
-    s=request.GET['s']
-    response=[]
-    q1 = Cities.objects.filter(name__icontains=s)
-    q2 = States.objects.filter(name__icontains=s)
-    q3 = Countries.objects.filter(name__icontains=s)
-    response.append(list(q1.values()))
-    response.append(list(q2.values()))
-    response.append(list(q3.values()))
-    
+    if list(request.GET)[0]=='s':
+        s=request.GET['s']
+        q1 = Cities.objects.filter(name__icontains=s)
+        q2 = States.objects.filter(name__icontains=s)
+        q3 = Countries.objects.filter(name__icontains=s)
+        serializer1=CitiesSerializer(q1,many=True)
+        serializer2=StatesSerializer(q2,many=True)
+        serializer3=CountriesSerializer(q3,many=True)
+        response={"cities":serializer1.data,
+                    "states":serializer2.data,
+                    "countries":serializer3.data }
+    elif list(request.GET)[0]=='city':
+        city=request.GET['city']
+        q1 = Cities.objects.filter(name__icontains=city)
+        serializer1=CitiesSerializer(q1,many=True)
+        response={"cities":serializer1.data }
+    elif list(request.GET)[0]=='state':
+        state=request.GET['state']
+        q1 = States.objects.filter(name__icontains=state)
+        serializer2=StatesSerializer(q1,many=True)
+        response={ "states":serializer2.data }
+    elif list(request.GET)[0]=='country':
+        country=request.GET['country']
+        q1 = Countries.objects.filter(name__icontains=country)
+        serializer3=CountriesSerializer(q1,many=True)
+        response={ "countries":serializer3.data }
     return JsonResponse(data=response,status=200,safe=False)
 
 
